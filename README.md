@@ -10,12 +10,13 @@ _Work in progress._
 
 ![preview](./res/preview.png)
 
-### Host systems (4x)
-- Machine:
-- OS:
-- CPU:
-- RAM:
-- Disk:
+### Host systems (5x)
+- Machine: Hetzner Dedicated Root Server EX42-NVMe
+- Location: HEL1 (Helsinki, Finland)
+- OS: Arch Linux latest minimal (English)
+- CPU: Intel Core i7-6700 (QuadCore/Skylake/HT)
+- RAM: 64GB DDR4
+- Disk: 2x512GB NVMe SSD (RAID 1)
 
 ### Ethereum 2.0 mainnet
 - Spec version: `v1.0.0`
@@ -65,6 +66,7 @@ _Work in progress._
 - `time`: time since client start in seconds
 - `slot`: current client slot as number
 - `sps`: slots per second as reported by client in seconds^{-1} (lighthouse only)
+  - _other clients:_ derived 60s moving average from `slot` number and `time` variable
 - `db`: database size in bytes
 - `pc`: connected peer count as number
 - `out`: outgoing network traffic by beacon node process in bytes (via `nethogs`)
