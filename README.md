@@ -1,4 +1,4 @@
-# Multi-client benchmark on Ethereum 2.0 mainnet 2021/01/28
+# Multi-client benchmarks on Ethereum 2.0 mainnet
 
 - [x] Lighthouse
 - [x] Prysm
@@ -27,11 +27,13 @@ _Work in progress._
 - from git `tags/v1.1.0`
 - Rust `1.49.0`, Cargo `1.49.0`
 - Built in `--release` mode
+
     `cargo build --release`
 
 ##### Prysm
 - `beacon-chain version Prysm/v1.1.0/9b367b36fc12ecf565ad649209aa2b5bba8c7797. Built at: 2021-01-18 19:47:14+00:00`
 - from binary release `v1.1.0`
+
     `./prysm.sh beacon-chain`
 
 ##### Teku
@@ -39,6 +41,7 @@ _Work in progress._
 - from git `tags/21.1.1`
 - Java `11.0.10`, Gradle `6.8.1`
 - Built in dist mode
+
     `./gradlew installDist`
 
 ##### Nimbus
@@ -46,6 +49,7 @@ _Work in progress._
 - from git `tags/v1.0.6`
 - Nim `1.2.6`, Make `4.3.0`
 - Built in `-d:release -d:insecure` mode
+
     `NIMFLAGS="-d:insecure -d:release" make -j $(nproc) nimbus_beacon_node`
 
 ##### Lodestar
@@ -53,6 +57,7 @@ _Work in progress._
 - from git `tags/v0.14.0`
 - Node `12.20.1`, Lerna `3.22.1`
 - Built in default mode
+
     `lerna bootstrap`
 
 ### Metrics collected
