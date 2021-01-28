@@ -1,8 +1,10 @@
-# manually: prepare sudo, user to run the node.
+#!/usr/bin/env bash
+
+# @manually: prepare sudo, `user` to run the node.
 
 # operating system
 sudo pacman -Syu
-sudo pacman -S base-devel git tmux make cmake pkgconf sysstat nethogs
+sudo pacman -S base-devel git tmux zsh make cmake pkgconf sysstat nethogs
 git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur
 cd /tmp/pikaur
 makepkg -fsri
@@ -33,7 +35,7 @@ cargo build --release
 cd
 
 # prysm
-git clone https://github.com/prysmaticlabs/prysm
+git clone https://github.com/prysmaticlabs/prysm.git
 cd prysm
 git checkout v1.1.0
 ./prysm.sh beacon-chain
@@ -47,7 +49,7 @@ git checkout 21.1.1
 cd
 
 # nimbus
-git clone https://github.com/status-im/nimbus-eth2
+git clone https://github.com/status-im/nimbus-eth2.git
 cd nimbus-eth2
 git checkout v1.0.6
 NIMFLAGS="-d:insecure -d:release" make -j $(nproc) nimbus_beacon_node
@@ -59,3 +61,10 @@ cd lodestar
 git checkout v0.14.0
 lerna bootstrap
 cd
+
+# scripts
+git clone https://github.com/byz-f/eth2-bench-mainnet.git bench
+
+# prepare
+sudo mkdir -p /srv/chain
+sudo chown user:users /srv/chain -R
