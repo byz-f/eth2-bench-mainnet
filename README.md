@@ -65,3 +65,10 @@ _Work in progress._
 - `out`: outgoing network traffic by beacon node process in bytes (via `nethogs`)
 - `inc`: incoming network traffic by beacon node process in bytes (via `nethogs`)
 - `cpu`: average `%user` cpu usage over last second of host system in percent (via `mpstat`)
+
+### Previous benchmarks
+- [eth2-bench-2020-10](https://github.com/q9f/eth2-bench-2020-10) ([Medalla Testnet](https://github.com/goerli/medalla))
+- [eth2-bench-2020-07](https://github.com/q9f/eth2-bench-2020-07) (Altona Testnet)
+- [eth2-bench-2020-06](https://github.com/q9f/eth2-bench-2020-06) (Witti Testnet)
+
+_See also: [Resource Analysis of Ethereum 2.0 Clients](https://arxiv.org/abs/2012.14718) (Barcelona Supercomputing Center)_
