@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# @manually: prepare sudo, `user` to run the node.
+# @manually: prepare hostname, `user` to run the node, sudo, etc.
 
 # operating system
 sudo pacman -Syu
-sudo pacman -S base-devel git tmux zsh make cmake pkgconf sysstat nethogs
+sudo pacman -S base-devel git tmux zsh make cmake pkgconf sysstat nethogs ruby
 git clone https://aur.archlinux.org/pikaur.git /tmp/pikaur
 cd /tmp/pikaur
 makepkg -fsri
@@ -12,6 +12,7 @@ cd
 
 # rust tool chains
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
 rustup default stable
 rustup update
 
@@ -19,7 +20,7 @@ rustup update
 pikaur -S go bazel
 
 # java tool chains
-pikaur -S jdk11-openjdk jre11-openjdk-headless gradle
+pikaur -S jdk11-openjdk jre11-openjdk jre11-openjdk-headless gradle
 
 # nodejs tool chains
 pikaur -S nvm

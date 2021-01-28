@@ -12,7 +12,7 @@ require 'thread'
 @METR = 8008
 @DATA = "/srv/chain/nimbus/db/"
 @TIME = -9
-@DEV = "eno1"
+@DEV = "enp0s31f6"
 @PROC = "nimbus_beacon_node"
 
 # GET BYTES INTEGER FROM KB FLOAT
@@ -85,11 +85,7 @@ end
 
 # SLOTS PER SECOND [1/s]
 def get_sync_speed
-	begin
-		v = get_metrics "sync_slots_per_second"
-	rescue
-		v = -9
-	end
+	v = -9 # not exposed
 end
 
 # DB SIZE [B]

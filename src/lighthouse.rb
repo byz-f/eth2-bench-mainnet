@@ -12,7 +12,7 @@ require 'thread'
 @METR = 5054
 @DATA = "/srv/chain/lighthouse/beacon/chain_db/"
 @TIME = -9
-@DEV = "eno1"
+@DEV = "enp0s31f6"
 @PROC = "lighthouse"
 
 # GET BYTES INTEGER FROM KB FLOAT
