@@ -1,76 +1,67 @@
-# Multi-client benchmark on Medalla testnet 2020/10/01
-Preliminary, high-level ETH2-client benchmarks.
+# Multi-client benchmark on Ethereum 2.0 mainnet 2021/01/28
+
 - [x] Lighthouse
 - [x] Prysm
 - [x] Nimbus
 - [x] Teku
-- [ ] Lodestar
+- [x] Lodestar
 
-**PDF: [2020-10-eth2-bench.pdf](./res/2020-10-eth2-bench.pdf)**
+_Work in progress._
 
 ![preview](./res/preview.png)
 
 ### Host systems (4x)
-- Machine: Scaleway HC-BM1-S (bare metal)
-- OS: Ubuntu 20.04 LTS, kernel 5.4.0-48-generic #52-Ubuntu
-- CPU: Intel Xeon Silver 4114, 20 cores
-- RAM: 128 GB
-- Disk: 1TB NMVe
+- Machine:
+- OS:
+- CPU:
+- RAM:
+- Disk:
 
-### Lighthouse
-- `Lighthouse v0.2.13-c0e76d2c`
-- https://github.com/sigp/lighthouse/releases/tag/v0.2.13
-- Rust `1.46.0`, Cargo `1.46.0`
+### Ethereum 2.0 mainnet
+- Spec version: `v1.0.0`
+- Circa `420_000` slots start time
+- 5 different clients compatible with mainnet spec
+
+##### Lighthouse
+- `Lighthouse v1.1.0-e4b6213`
+- from git `tags/v1.1.0`
+- Rust `1.49.0`, Cargo `1.49.0`
 - Built in `--release` mode
+    `cargo build --release`
 
-### Prysm
-- `Prysm/v1.0.0-alpha.27/eb3e4944e9ee4c69bbec0866c3ecdf6cd44cfcc3. Built at: 2020-09-30 10:28:14+00:00`
-- https://github.com/prysmaticlabs/prysm/releases/tag/v1.0.0-alpha.27
-- Go `1.13.8`, Bazel `3.5.0`
-- Built in `--config=release` mode
+##### Prysm
+- `beacon-chain version Prysm/v1.1.0/9b367b36fc12ecf565ad649209aa2b5bba8c7797. Built at: 2021-01-18 19:47:14+00:00`
+- from binary release `v1.1.0`
+    `./prysm.sh beacon-chain`
 
-### Nimbus
-- `Nimbus beacon node v0.5.0 (78ceeed8)`
-- `master` @ 78ceeed8042d6b70d9c1aae09688d43ff79db6e2 (Sept/29, 2020)
-- Nim `1.2.6`, Make `4.2.1`
+##### Teku
+- `teku/v21.1.1/linux-x86_64/oracle_openjdk-java-11`
+- from git `tags/21.1.1`
+- Java `11.0.10`, Gradle `6.8.1`
+- Built in dist mode
+    `./gradlew installDist`
+
+##### Nimbus
+- `Nimbus beacon node v1.0.6-87955f2d-stateofus`
+- from git `tags/v1.0.6`
+- Nim `1.2.6`, Make `4.3.0`
 - Built in `-d:release -d:insecure` mode
-- Permalink: https://github.com/status-im/nim-beacon-chain/tree/78ceeed8042d6b70d9c1aae09688d43ff79db6e2
+    `NIMFLAGS="-d:insecure -d:release" make -j $(nproc) nimbus_beacon_node`
 
-### Teku
-- `teku/v0.12.8/linux-x86_64/-privatebuild-openjdk64bitservervm-java-14`
-- https://github.com/PegaSysEng/teku/releases/tag/0.12.8
-- Java `14.0.1`, Gradle `6.5.1`
-- Built in `installDist` mode
-
-### Medalla testnet
-- Spec version: `v0.12.2`
-- Circa `410_000` slots start time
-- 4 different clients known to validate the network
-- 5 different clients known to connect and sync the network
-- Permalink: https://github.com/goerli/medalla/tree/6e600540833523b3f411386e5c5d51a7ecfd7a5a
+##### Lodestar
+- `lodestar 0.14.0`
+- from git `tags/v0.14.0`
+- Node `12.20.1`, Lerna `3.22.1`
+- Built in default mode
+    `lerna bootstrap`
 
 ### Metrics collected
-- `time`: Unix time in seconds
-  - all: (Ruby) `Time.now.to_i`
-- `db`: Database size in bytes
-  - Lighthouse: (Shell) `du -bs /data/lighthouse/beacon/chain_db/`
-  - Prysm: (Shell) `du -bs /data/prysm/beaconchaindata/`
-  - Teku: (Shell) `du -bs /data/teku/data/db/`
-  - Nimbus: (Shell) `du -bs /data/nimbus/db/`
-- `mem`: Resident memory in bytes
-  - Lighthouse: (REST API) `/node/health`, `.pid_mem_resident_set_size`
-  - Prysm: (Metrics) `process_resident_memory_bytes`
-  - Teku: (Metrics) `process_resident_memory_bytes`
-  - Nimbus: (Metrics) `process_resident_memory_bytes`
-- `slot`: Head slot number in 1
-  - Lighthouse: (REST API) `/beacon/head`, `.slot`
-  - Prysm: (gRPC API) `/eth/v1alpha1/beacon/chainhead`, `.headSlot`
-  - Teku: (REST API) `/beacon/head`, `.slot`
-  - Nimbus: (RPC) `getBeaconHead`, `.result`
-- `peers`: Peer count in 1
-  - Lighthouse: (REST API) `/network/peer_count`
-  - Prysm: (gRPC API) `/eth/v1alpha1/node/peers` _(counted)_
-  - Teku: (REST API) `/network/peer_count`
-  - Nimbus: (RPC) `getNetworkPeers`
-
-_All other metrics are derived._
+- `unix`: unix time of data in seconds
+- `time`: time since client start in seconds
+- `slot`: current client slot as number
+- `sps`: slots per second as reported by client in seconds^{-1} (lighthouse only)
+- `db`: database size in bytes
+- `pc`: connected peer count as number
+- `out`: outgoing network traffic by beacon node process in bytes (via `nethogs`)
+- `inc`: incoming network traffic by beacon node process in bytes (via `nethogs`)
+- `cpu`: average `%user` cpu usage over last second of host system in percent (via `mpstat`)
