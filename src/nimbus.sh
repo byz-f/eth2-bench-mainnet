@@ -2,15 +2,13 @@
 
 while true
 do
-  beacon_node --log-level="INFO" \
-  --network="medalla" \
-  --data-dir="/data/nimbus/" \
-  --web3-url="http://127.0.0.1:8545" \
+  nimbus_beacon_node --log-level="INFO" \
+  --data-dir="/srv/chain/nimbus/" \
+  --web3-url="https://mainnet.infura.io/v3/9352a830436b4171b3bcd96b2f418790" \
   --non-interactive="True" \
   --status-bar="False" \
   --metrics="True" \
   --metrics-address="127.0.0.1" \
-  --metrics-port="8090" \
-  --rpc="True" >& ../log/nimbus.log
+  --rpc="True" 2>&1 | tee ../log/$(date +%y%m%d%H%M%S)-nimbus.log
   sleep 10
 done

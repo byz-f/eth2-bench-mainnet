@@ -1,16 +1,13 @@
-eth1-endpoint: "http://127.0.0.1:8545"
+eth1-endpoint: "https://mainnet.infura.io/v3/9352a830436b4171b3bcd96b2f418790"
 
-data-path: "/data/teku"
+data-path: "/srv/chain/teku"
 
 logging: "INFO"
 log-color-enabled: true
 log-include-events-enabled: true
 
-p2p-port: 30000
-p2p-advertised-port: 30000
 p2p-enabled: true
 p2p-discovery-enabled: true
-p2p-snappy-enabled: true
 
 rest-api-port: 5051
 rest-api-enabled: True
