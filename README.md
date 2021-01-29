@@ -6,9 +6,7 @@
 - [x] Teku
 - [x] Lodestar
 
-_Work in progress._
-
-![preview](./res/preview.png)
+![preview](./res/png/10-sync-progress.png)
 
 ### Host systems (5x)
 - Machine: Hetzner Dedicated Root Server EX42-NVMe
