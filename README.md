@@ -1,12 +1,8 @@
 # Multi-client benchmarks on Ethereum 2.0 mainnet
 
-- [x] Lighthouse
-- [x] Prysm
-- [x] Nimbus
-- [x] Teku
-- [x] Lodestar
+![sync progress](./res/png/10-sync-progress.png)
 
-![preview](./res/png/10-sync-progress.png)
+![sync speed](./res/png/12-sync-speed.png)
 
 ### Host systems (5x)
 - Machine: Hetzner Dedicated Root Server EX42-NVMe
@@ -18,8 +14,13 @@
 
 ### Ethereum 2.0 mainnet
 - Spec version: `v1.0.0`
-- Circa `420_000` slots start time
+- Circa `420_000` slots at start time
 - 5 different clients compatible with mainnet spec
+    - [x] Lighthouse
+    - [x] Prysm ([#8209](https://github.com/prysmaticlabs/prysm/issues/8209))
+    - [x] Nimbus
+    - [x] Teku
+    - [x] Lodestar ([#2005](https://github.com/ChainSafe/lodestar/issues/2005))
 
 ##### Lighthouse
 - `Lighthouse v1.1.0-e4b6213`
@@ -64,12 +65,14 @@
 - `time`: time since client start in seconds
 - `slot`: current client slot as number
 - `sps`: slots per second as reported by client in seconds^{-1} (lighthouse only)
-  - _other clients:_ derived 60s moving average from `slot` number and `time` variable
 - `db`: database size in bytes
 - `pc`: connected peer count as number
 - `out`: outgoing network traffic by beacon node process in bytes (via `nethogs`)
 - `inc`: incoming network traffic by beacon node process in bytes (via `nethogs`)
 - `cpu`: average `%user` cpu usage over last second of host system in percent (via `mpstat`)
+- metrics derived:
+    - `vtime`: adjusted time; 0 once first slot synced
+    - `sps60`: 60s moving average from `slot` number and `time` variable
 
 ### Previous benchmarks
 - [eth2-bench-2020-10](https://github.com/q9f/eth2-bench-2020-10) ([Medalla Testnet](https://github.com/goerli/medalla))
