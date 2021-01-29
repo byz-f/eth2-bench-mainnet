@@ -1,4 +1,4 @@
-eth1-endpoint: "https://mainnet.infura.io/v3/9352a830436b4171b3bcd96b2f418790"
+eth1-endpoint: "https://mainnet.infura.io/v3/819412e57b5943a6a12c0a335fe5f87b"
 
 data-path: "/srv/chain/teku"
 
