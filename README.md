@@ -71,6 +71,8 @@
 - metrics derived:
     - `vtime`: adjusted time; 0 once first slot synced
     - `sps60`: 60s moving average from `slot` number and `time` variable
+    - `nout`: regard out traffic as negative value `-out`
+    - `trff`: sum of `inc` and `out`
 
 ### Previous benchmarks
 - [eth2-bench-2020-10](https://github.com/q9f/eth2-bench-2020-10) ([Medalla Testnet](https://github.com/goerli/medalla))
