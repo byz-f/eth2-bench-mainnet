@@ -1,8 +1,6 @@
 # Multi-client benchmarks on Ethereum 2.0 mainnet
 
-![sync progress](./res/png/10-sync-progress.png)
-
-![sync speed](./res/png/12-sync-speed.png)
+![preview](./res/preview.png)
 
 ### Host systems (5x)
 - Machine: Hetzner Dedicated Root Server EX42-NVMe

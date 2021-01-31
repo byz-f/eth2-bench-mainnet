@@ -1,5 +1,6 @@
 library(scales)
 library(zoo)
+library(dplyr)
 
 # lighthouse, lodestar, nimbus, prysm, teku data
 lh = read.csv("../dat/210128164829-lighthouse.csv", header = TRUE)
@@ -7,6 +8,20 @@ ld = read.csv("../dat/210128164829-lodestar.csv", header = TRUE)
 nb = read.csv("../dat/210128164829-nimbus.csv", header = TRUE)
 pr = read.csv("../dat/210128164829-prysm.csv", header = TRUE)
 tk = read.csv("../dat/210128164829-teku.csv", header = TRUE)
+
+# mutate outbound traffic to be negative
+lh = lh %>% mutate(nout = out * -1)
+ld = ld %>% mutate(nout = out * -1)
+nb = nb %>% mutate(nout = out * -1)
+pr = pr %>% mutate(nout = out * -1)
+tk = tk %>% mutate(nout = out * -1)
+
+# sum up inb and out traffic
+lh = lh %>% mutate(trff = out + inc)
+ld = ld %>% mutate(trff = out + inc)
+nb = nb %>% mutate(trff = out + inc)
+pr = pr %>% mutate(trff = out + inc)
+tk = tk %>% mutate(trff = out + inc)
 
 # orange, black, blue, purple, green gradients
 col_lh = c("#7f2704","#a63603","#d94801","#f16913","#fd8d3c","#fdae6b","#fdd0a2","#fee6ce","#fff5eb")
@@ -145,31 +160,36 @@ dbt <- lines(pr$time, rollmean(pr$db, 600, fill=list(NA, NULL, NA)), col=alpha(c
 dbt <- lines(tk$time, rollmean(tk$db, 600, fill=list(NA, NULL, NA)), col=alpha(col_tk[3], 0.5))
 dbt <- lines(nb$time, rollmean(nb$db, 600, fill=list(NA, NULL, NA)), col=alpha(col_nb[3], 0.5))
 dbt <- lines(ld$time, rollmean(ld$db, 600, fill=list(NA, NULL, NA)), col=alpha(col_ld[3], 0.5))
+dbt <- abline(v = 9029, col=col_lh[3], lwd=1, lty=3)
+dbt <- abline(v = 14759, col=col_pr[3], lwd=1, lty=3)
+dbt <- abline(v = 18059, col=col_tk[3], lwd=1, lty=3)
+dbt <- abline(v = 19213, col=col_nb[3], lwd=1, lty=3)
+dbt <- abline(v = 30027, col=col_ld[3], lwd=1, lty=3)
 # > max(tk$db[0:30027])
 # [1] 5001367200
 # > max(tk$db[0:30027])/1024/1024/1024
 # [1] 4.657886
-dbt <- text(24000, 5001367200+200000000, "4.658 GiB", cex=0.8, pos=4, col=col_tk[2])
+dbt <- text(15962, 5001367200+200000000, "4.658 GiB", cex=0.8, pos=4, col=col_tk[2])
 # > max(nb$db[0:30027])
 # [1] 4822584504
 # > max(nb$db[0:30027])/1024/1024/1024
 # [1] 4.491382
-dbt <- text(19000, 4822584504+300000000, "4.491 GiB", cex=0.8, pos=4, col=col_nb[2])
+dbt <- text(30098, 4822584504+300000000, "4.491 GiB", cex=0.8, pos=4, col=col_nb[2])
 # > max(pr$db[0:30027])
 # [1] 3393183744
 # > max(pr$db[0:30027])/1024/1024/1024
 # [1] 3.160149
-dbt <- text(18000, 3393183744+200000000, "3.160 GiB", cex=0.8, pos=4, col=col_pr[2])
+dbt <- text(29494, 3393183744+200000000, "3.160 GiB", cex=0.8, pos=4, col=col_pr[2])
 # > max(lh$db[0:30027])
 # [1] 3194929693
 # > max(lh$db[0:30027])/1024/1024/1024
 # [1] 2.97551
-dbt <- text(21000, 3194929693-50000000, "2.976 GiB", cex=0.8, pos=4, col=col_lh[2])
+dbt <- text(8936, 3194929693-50000000, "2.976 GiB", cex=0.8, pos=4, col=col_lh[2])
 # > max(ld$db[0:30027])
 # [1] 1599823563
 # > max(ld$db[0:30027])/1024/1024/1024
 # [1] 1.489952
-dbt <- text(30000, 1599823563+50000000, "1.490 GiB", cex=0.8, pos=4, col=col_ld[2])
+dbt <- text(30996, 1599823563+50000000, "1.490 GiB", cex=0.8, pos=4, col=col_ld[2])
 dbt <- legend("bottomright", pch=19,
              legend = c("Teku", "Nimbus", "Prysm", "Lighthouse", "Lodestar"),
              col=c(col=col_tk[4],col=col_nb[4],col=col_pr[4],col=col_lh[4],col=col_ld[4]))
@@ -225,6 +245,11 @@ memt <- lines(pr$time, rollmean(pr$mem, 600, fill=list(NA, NULL, NA)), col=alpha
 memt <- lines(tk$time, rollmean(tk$mem, 600, fill=list(NA, NULL, NA)), col=alpha(col_tk[3], 0.5))
 memt <- lines(nb$time, rollmean(nb$mem, 600, fill=list(NA, NULL, NA)), col=alpha(col_nb[3], 0.5))
 memt <- lines(ld$time, rollmean(ld$mem, 600, fill=list(NA, NULL, NA)), col=alpha(col_ld[3], 0.5))
+memt <- abline(v = 9029, col=col_lh[3], lwd=1, lty=3)
+memt <- abline(v = 14759, col=col_pr[3], lwd=1, lty=3)
+memt <- abline(v = 18059, col=col_tk[3], lwd=1, lty=3)
+memt <- abline(v = 19213, col=col_nb[3], lwd=1, lty=3)
+memt <- abline(v = 30027, col=col_ld[3], lwd=1, lty=3)
 # > max(tk$mem[0:30027])
 # [1] 12298780672
 # > max(tk$mem[0:30027])/1024/1024/1024
@@ -315,6 +340,11 @@ pert <- lines(pr$time, rollmean(pr$pc, 600, fill=list(NA, NULL, NA)), col=alpha(
 pert <- lines(tk$time, rollmean(tk$pc, 600, fill=list(NA, NULL, NA)), col=alpha(col_tk[3], 0.5))
 pert <- lines(nb$time, rollmean(nb$pc, 600, fill=list(NA, NULL, NA)), col=alpha(col_nb[3], 0.5))
 pert <- lines(ld$time, rollmean(ld$pc, 600, fill=list(NA, NULL, NA)), col=alpha(col_ld[3], 0.5))
+pert <- abline(v = 9029, col=col_lh[3], lwd=1, lty=3)
+pert <- abline(v = 14759, col=col_pr[3], lwd=1, lty=3)
+pert <- abline(v = 18059, col=col_tk[3], lwd=1, lty=3)
+pert <- abline(v = 19213, col=col_nb[3], lwd=1, lty=3)
+pert <- abline(v = 30027, col=col_ld[3], lwd=1, lty=3)
 pert <- legend("bottomright", pch=19,
                legend = c("Nimbus", "Teku", "Lighthouse", "Prysm", "Lodestar"),
                col=c(col=col_nb[4],col=col_tk[4],col=col_lh[4],col=col_pr[4],col=col_ld[4]))
@@ -334,4 +364,83 @@ pers <- legend("bottomright", pch=19,
                legend = c("Nimbus", "Teku", "Lighthouse", "Prysm", "Lodestar"),
                col=c(col=col_nb[4],col=col_tk[4],col=col_lh[4],col=col_pr[4],col=col_ld[4]))
 
+# out and inbount traffic
+trff <- plot(nb$time, nb$inc, main="Traffic over Time (In/Out)", xlab="Time [s]", ylab="Traffic [B/s]", pch=".", ylim=c(-80000, 80000), xlim=c(0, 30027+5000), col=alpha(col_nb[5], 0.1))
+trff <- lines(pr$time, pr$inc, type="p", pch=".", col=alpha(col_pr[5], 0.1))
+trff <- lines(lh$time, lh$inc, type="p", pch=".", col=alpha(col_lh[5], 0.1))
+trff <- lines(tk$time, tk$inc, type="p", pch=".", col=alpha(col_tk[5], 0.1))
+trff <- lines(ld$time, ld$inc, type="p", pch=".", col=alpha(col_ld[5], 0.1))
+trff <- lines(lh$time, rollmean(lh$inc, 600, fill=list(NA, NULL, NA)), col=alpha(col_lh[3], 0.5))
+trff <- lines(pr$time, rollmean(pr$inc, 600, fill=list(NA, NULL, NA)), col=alpha(col_pr[3], 0.5))
+trff <- lines(tk$time, rollmean(tk$inc, 600, fill=list(NA, NULL, NA)), col=alpha(col_tk[3], 0.5))
+trff <- lines(nb$time, rollmean(nb$inc, 600, fill=list(NA, NULL, NA)), col=alpha(col_nb[3], 0.5))
+trff <- lines(ld$time, rollmean(ld$inc, 600, fill=list(NA, NULL, NA)), col=alpha(col_ld[3], 0.5))
+trff <- lines(pr$time, pr$nout, type="p", pch=".", col=alpha(col_pr[5], 0.1))
+trff <- lines(pr$time, pr$nout, type="p", pch=".", col=alpha(col_pr[5], 0.1))
+trff <- lines(lh$time, lh$nout, type="p", pch=".", col=alpha(col_lh[5], 0.1))
+trff <- lines(tk$time, tk$nout, type="p", pch=".", col=alpha(col_tk[5], 0.1))
+trff <- lines(ld$time, ld$nout, type="p", pch=".", col=alpha(col_ld[5], 0.1))
+trff <- lines(lh$time, rollmean(lh$nout, 600, fill=list(NA, NULL, NA)), col=alpha(col_lh[3], 0.5))
+trff <- lines(pr$time, rollmean(pr$nout, 600, fill=list(NA, NULL, NA)), col=alpha(col_pr[3], 0.5))
+trff <- lines(tk$time, rollmean(tk$nout, 600, fill=list(NA, NULL, NA)), col=alpha(col_tk[3], 0.5))
+trff <- lines(nb$time, rollmean(nb$nout, 600, fill=list(NA, NULL, NA)), col=alpha(col_nb[3], 0.5))
+trff <- lines(ld$time, rollmean(ld$nout, 600, fill=list(NA, NULL, NA)), col=alpha(col_ld[3], 0.5))
+trff <- abline(v = 9029, col=col_lh[3], lwd=1, lty=3)
+trff <- abline(v = 14759, col=col_pr[3], lwd=1, lty=3)
+trff <- abline(v = 18059, col=col_tk[3], lwd=1, lty=3)
+trff <- abline(v = 19213, col=col_nb[3], lwd=1, lty=3)
+trff <- abline(v = 30027, col=col_ld[3], lwd=1, lty=3)
+trff <- text(33000, +70000, "+ in", cex=0.8, pos=4, col=col_ld[1])
+trff <- text(33000, -70000, "- out", cex=0.8, pos=4, col=col_ld[1])
+trff <- legend("bottomleft", pch=19,
+               legend = c("Nimbus", "Teku", "Prysm", "Lodestar", "Lighthouse"),
+               col=c(col=col_nb[4],col=col_tk[4],col=col_pr[4],col=col_ld[4],col=col_lh[4]))
 
+# out and inbount traffic
+trfs <- plot(nb$time, nb$trff, main="Traffic over Time (Total)", xlab="Time [s]", ylab="Traffic [B/s]", pch=".", log="y", xlim=c(0, 30027+5000), col=alpha(col_nb[5], 0.1))
+trfs <- lines(pr$time, pr$trff, type="p", pch=".", col=alpha(col_pr[5], 0.1))
+trfs <- lines(lh$time, lh$trff, type="p", pch=".", col=alpha(col_lh[5], 0.1))
+trfs <- lines(tk$time, tk$trff, type="p", pch=".", col=alpha(col_tk[5], 0.1))
+trfs <- lines(ld$time, ld$trff, type="p", pch=".", col=alpha(col_ld[5], 0.1))
+trfs <- lines(lh$time, rollmean(lh$trff, 600, fill=list(NA, NULL, NA)), col=alpha(col_lh[3], 0.5))
+trfs <- lines(pr$time, rollmean(pr$trff, 600, fill=list(NA, NULL, NA)), col=alpha(col_pr[3], 0.5))
+trfs <- lines(tk$time, rollmean(tk$trff, 600, fill=list(NA, NULL, NA)), col=alpha(col_tk[3], 0.5))
+trfs <- lines(nb$time, rollmean(nb$trff, 600, fill=list(NA, NULL, NA)), col=alpha(col_nb[3], 0.5))
+trfs <- lines(ld$time, rollmean(ld$trff, 600, fill=list(NA, NULL, NA)), col=alpha(col_ld[3], 0.5))
+trfs <- abline(v = 9029, col=col_lh[3], lwd=1, lty=3)
+trfs <- abline(v = 14759, col=col_pr[3], lwd=1, lty=3)
+trfs <- abline(v = 18059, col=col_tk[3], lwd=1, lty=3)
+trfs <- abline(v = 19213, col=col_nb[3], lwd=1, lty=3)
+trfs <- abline(v = 30027, col=col_ld[3], lwd=1, lty=3)
+trfs <- legend("bottomright", pch=19,
+               legend = c("Nimbus", "Teku", "Prysm", "Lodestar", "Lighthouse"),
+               col=c(col=col_nb[4],col=col_tk[4],col=col_pr[4],col=col_ld[4],col=col_lh[4]))
+
+# cpu over time
+cput <- plot(lh$time, lh$cpu, main="CPU Usage over Time", xlab="Time [s]", ylab="User [%]", pch=".", ylim=c(0, 100), xlim=c(0, 30027+5000), col=alpha(col_lh[5], 0.3))
+cput <- lines(pr$time, pr$cpu, type="p", pch=".", col=alpha(col_pr[5], 0.3))
+cput <- lines(nb$time, nb$cpu, type="p", pch=".", col=alpha(col_nb[5], 0.3))
+cput <- lines(tk$time, tk$cpu, type="p", pch=".", col=alpha(col_tk[5], 0.3))
+cput <- lines(ld$time, ld$cpu, type="p", pch=".", col=alpha(col_ld[5], 0.3))
+cput <- lines(lh$time, rollmean(lh$cpu, 600, fill=list(NA, NULL, NA)), col=alpha(col_lh[3], 0.5))
+cput <- lines(pr$time, rollmean(pr$cpu, 600, fill=list(NA, NULL, NA)), col=alpha(col_pr[3], 0.5))
+cput <- lines(tk$time, rollmean(tk$cpu, 600, fill=list(NA, NULL, NA)), col=alpha(col_tk[3], 0.5))
+cput <- lines(nb$time, rollmean(nb$cpu, 600, fill=list(NA, NULL, NA)), col=alpha(col_nb[3], 0.5))
+cput <- lines(ld$time, rollmean(ld$cpu, 600, fill=list(NA, NULL, NA)), col=alpha(col_ld[3], 0.5))
+cput <- text(-1000, 0.0/8.0*100.0, "0 -", cex=0.8, pos=4, col=col_ld[1])
+cput <- text(-1000, 1.0/8.0*100.0, "1 -", cex=0.8, pos=4, col=col_ld[1])
+cput <- text(-1000, 2.0/8.0*100.0, "2 -", cex=0.8, pos=4, col=col_ld[1])
+cput <- text(-1000, 3.0/8.0*100.0, "3 -", cex=0.8, pos=4, col=col_ld[1])
+cput <- text(-1000, 4.0/8.0*100.0, "4 -", cex=0.8, pos=4, col=col_ld[1])
+cput <- text(-1000, 5.0/8.0*100.0, "5 -", cex=0.8, pos=4, col=col_ld[1])
+cput <- text(-1000, 6.0/8.0*100.0, "6 -", cex=0.8, pos=4, col=col_ld[1])
+cput <- text(-1000, 7.0/8.0*100.0, "7 -", cex=0.8, pos=4, col=col_ld[1])
+cput <- text(-1000, 8.0/8.0*100.0, "8 - cores", cex=0.8, pos=4, col=col_ld[1])
+cput <- abline(v = 9029, col=col_lh[3], lwd=1, lty=3)
+cput <- abline(v = 14759, col=col_pr[3], lwd=1, lty=3)
+cput <- abline(v = 18059, col=col_tk[3], lwd=1, lty=3)
+cput <- abline(v = 19213, col=col_nb[3], lwd=1, lty=3)
+cput <- abline(v = 30027, col=col_ld[3], lwd=1, lty=3)
+cput <- legend("topright", pch=19,
+               legend = c("Lighthouse", "Prysm", "Teku", "Lodestar", "Nimbus"),
+               col=c(col=col_lh[4],col=col_pr[4],col=col_tk[4],col=col_ld[4],col=col_nb[4]))
