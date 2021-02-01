@@ -1,8 +1,4 @@
-# Ethereum 2.0 Mainnet - All Clients Compared
-
-![preview](../res/preview.png)
-
-After the [Ethereum 2.0 mainnet launch](https://www.coindesk.com/ethereum-2-0-beacon-chain-goes-live-as-world-computer-begins-long-awaited-overhaul) of the beacon chain in December 2020, it is just about time to introduce and compare the existing protocol implementations. The first part of this mini-series of articles, will compare the beacon node performance and resource utilization of the five main clients, in alphabetical order:
+After the [Ethereum 2.0 mainnet launch](https://www.coindesk.com/ethereum-2-0-beacon-chain-goes-live-as-world-computer-begins-long-awaited-overhaul) of the beacon chain in December 2020, it is just about time to introduce and compare the existing protocol implementations. The first part of this mini-series of articles, will compare the beacon-node performance and resource utilization of the five main clients, in alphabetical order:
 * **[Lighthouse](https://github.com/sigp/lighthouse)** (Rust, Sigma Prime)
 * **[Lodestar](https://github.com/ChainSafe/lodestar)** (TypeScript, ChainSafe Systems)
 * **[Nimbus](https://github.com/status-im/nimbus-eth2)** (Nim, Status)
@@ -19,7 +15,7 @@ Notably, in this article, we focus on the first component, the _beacon chain_ as
 ### Synchronization Metrics
 The first and potentially most interesting question is, how long does it take to synchronize the Ethereum 2.0 beacon-chain. Well, here's the results.
 
-![sync-progress](../res/png/10-sync-progress.png)
+![Sync Progress](https://dev-to-uploads.s3.amazonaws.com/i/k454rs1l8kemcf4f1fi8.png)
 
 Here, you can read the synchronization progress in slot number over time of the client running. Before nominating a winner, which is not the scope of this article anyways, there are three things to know about this chart.
 1. Prysm (purple) does something unique that the other clients do not do anymore: It connects to an Ethereum 1.x node, fetches all Ether deposits from the validator registry, and builds the Eth2 genesis from the Eth1 state. While this is a good feature from a security perspective as you do not have to trust the Prysm developers to give you the correct genesis state, this obviously takes time and therefore, there is a clearly visible offset between client start and synchronization start ([#8209](https://github.com/prysmaticlabs/prysm/issues/8209)).
@@ -28,13 +24,13 @@ Here, you can read the synchronization progress in slot number over time of the 
 
 Given this chart, Lighthouse (orange) shows an outstanding overall "out-of-the-box" performance with Prysm, Teku (green), and Nimbus (blue) doing a good job at keeping up. But, let's also take a look at this.
 
-![sync-progress-adjusted](../res/png/11-sync-progress-adjusted.png)
+![Sync Progress (Adjusted)](https://dev-to-uploads.s3.amazonaws.com/i/e0tz25jdgyzq0k3ayeqn.png)
 
 In this chart, we removed the time offset between launching the client and the first beacon chain block seen by the client during synchronization. Now you can see, that Prysm actually beats Lighthouse in pure synchronization speed slightly, requiring a little less than two hours, where Lighthouse requires two and a half hours. Teku and Nimbus still showing good performance with roughly five hours required.
 
 Notably, and to be fair with the Lodestar team, the strength of the Eth2 TypeScript implementation is not being the go-to client for running a full beacon-chain or validator node but rather providing the infrasturcture for all web, browser, and plugin-based components of Eth2 decentralized applications in future.
 
-![sync-speed](../res/png/12-sync-speed.png)
+![Sync Speed](https://dev-to-uploads.s3.amazonaws.com/i/o4jdxys37rwbj471p8ji.png)
 
 Now, given (A) we know the current slot height of the client's beacon head block and (B) we can look up the head it saw 60 seconds ago, we can compute the synchronization speed as moving average over the last 60 seconds displayed at slots per second (dots); a moving average over 10 minutes is displayed as solid line.
 
@@ -44,7 +40,7 @@ But, what is a slot, you may ask. In traditional blockchains, such as Bitcoin or
 
 In Ethereum 2.0, there is always an assigned slot scheduled at a fixed interval; here: 12 seconds. If the validator that is assigned to such a slot, proposes a block, we see a block in that slot. However, if a validator misses its slot, the slot will be empty (no block) but the slot count will move on regardless. Therefore, in Eth2, we compare the sync-speed in slots per second.
 
-![sync-speed-progress](../res/png/13-sync-speed-progress.png)
+![Sync Speed (Progress)](https://dev-to-uploads.s3.amazonaws.com/i/djaqr7lqfl6720r7oqa5.png)
 
 Let's remove the time component from the chart above and solely focus on synchronization speed mapped over the synchronized slot number. Across all clients, there is a trend visible that sync performance decreases over slot number. As this data was gathered on the Ethereum 2.0 mainnet, we know that there is a [queue of validators](https://eth2-validator-queue.web.app/) waiting to join the network. At the time of writing, 13_458 validators are in the queue which would take almost 15 days to clear at a rate of 900 new validators every day.
 
@@ -54,19 +50,19 @@ So, knowing about the linear growth of the Eth2 mainnet validator count, we can 
 
 In the previous section, we solely analyzed synchronization metrics for the purpose of finding the _fastest_ client. But which client is not only fast but also _efficient_ in their resource utilization?
 
-![disk-usage-progress](../res/png/21-disk-usage-progress.png)
+![Disk Usage](https://dev-to-uploads.s3.amazonaws.com/i/zeonkv2pmcjfz1dem6f8.png)
 
 Here, the size of the database is compared across the five clients in relation to the synchronized slot number. Notably, Lodestar comes with the smallest footprint totaling only 1.49 GiB for the fully synchronized mainnet node (420_000 slots). Lighthouse (2.98 GiB) and Prysm (3.16 GiB) follow up with good results.
 
 All clients implement database pruning by default. This means, everything that is invalidated by the beacon chain's finality, e.g., is removed ... blah
 
-![memory-usage-progress](../res/png/31-memory-usage-progress.png)
+![Memory Usage](https://dev-to-uploads.s3.amazonaws.com/i/lz86mlmyo93nzrzgfnm5.png)
 
 This is the same chart but plotting the resident memory set size of each client during synchronization. Here, the Nimbus client is highly efficient, requiring only about 1 GiB of RAM during the entire processing of the beacon-chain mainnet. Nimbus is followed by Lighthouse and Lodestar both operating at slightly less than 3 GiB.
 
 It shall be noted that the off-heap memory that Java allocates for Teku is outside of the client developer's control as the JVM is being greedy about available memory. The results of these metrics for Teku vary massively based on the available total memory available.
 
-![cpu-usage](../res/png/50-cpu-usage.png)
+![CPU Usage](https://dev-to-uploads.s3.amazonaws.com/i/xuwsncbsg85s86x8p04j.png)
 
 Last but not least, let's take a look at the CPU utilization.
 
