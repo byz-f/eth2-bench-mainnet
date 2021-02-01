@@ -18,7 +18,7 @@
     - [x] Prysm ([#8209](https://github.com/prysmaticlabs/prysm/issues/8209))
     - [x] Nimbus
     - [x] Teku
-    - [x] Lodestar ([#2005](https://github.com/ChainSafe/lodestar/issues/2005))
+    - [x] Lodestar ([#1217](https://github.com/ChainSafe/lodestar/issues/1217)) ([#2005](https://github.com/ChainSafe/lodestar/issues/2005))
 
 ##### Lighthouse
 - `Lighthouse v1.1.0-e4b6213`
