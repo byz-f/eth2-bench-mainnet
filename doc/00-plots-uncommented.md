@@ -1,5 +1,8 @@
 ### all plots uncommented
 
+* png: [../res/png](../res/png)
+* pdf: [../res/pdf](../res/pdf)
+
 ![lighthouse-pairs](../res/png/00-lighthouse-pairs.png)
 
 ![lodestar-pairs](../res/png/01-lodestar-pairs.png)
