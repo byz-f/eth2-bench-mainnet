@@ -1,6 +1,8 @@
 # Multi-client benchmarks on Ethereum 2.0 mainnet
 
-![preview](./res/preview.png)
+[![preview](./res/preview.png)](https://dev.to/q9/ethereum-2-0-mainnet-clients-3and)
+
+Read the full article: https://dev.to/q9/ethereum-2-0-mainnet-clients-3and ([mirror](./doc/10-blog-article.md))
 
 ### Host systems (5x)
 - Machine: Hetzner Dedicated Root Server EX42-NVMe
